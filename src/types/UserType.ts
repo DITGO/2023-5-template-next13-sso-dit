@@ -71,7 +71,7 @@ export type UserType = {
         },        
     ],
     semPerfilThisSistema: boolean;
-    perfisSistemaAtual: string[],
+    perfisSistemaAtual: string[] | null,
     dtExpiracaoSenha: string,
     tokenCriptografado: boolean,
     departamento: {

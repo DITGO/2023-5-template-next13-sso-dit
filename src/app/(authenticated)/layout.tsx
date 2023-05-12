@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 import ptBR from 'antd/es/locale/pt_BR';
 import { DesktopOutlined, ExperimentOutlined, EyeInvisibleFilled, EyeInvisibleOutlined, EyeOutlined, LoadingOutlined, MobileOutlined, PaperClipOutlined, PoweroffOutlined, QuestionCircleFilled, QuestionCircleOutlined, QuestionOutlined, StarFilled } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
-import { sistemaDescricao, sistemaNameSSO, sistemaVersao } from '@/configs/sistemaConfig';
+import { perfisSistema, sistemaDescricao, sistemaNameSSO, sistemaVersao } from '@/configs/sistemaConfig';
 import Title from 'antd/es/typography/Title';
 import Link from 'next/link';
 import { Avatar, Breadcrumb, BreadcrumbItemProps, Button, Col, ConfigProvider, Divider, Drawer, Layout, List, Menu, MenuProps, Modal, Popover, Result, Row, Space, Tooltip, theme } from 'antd';
@@ -56,17 +56,20 @@ export default function RootLayout({
             key: 'dashboard',
             icon: <DesktopOutlined />,
             link: '/dashboard',
+            perfis: [perfisSistema.ALL],
         },
         {
             label: 'Teste',
             key: 'teste',
             icon: <ExperimentOutlined />,
+            perfis: [perfisSistema.ALL],
             children: [
                 {
                     label: 'Teste 1',
                     key: 'teste_1',
                     icon: <PaperClipOutlined />,
                     link: '/teste',
+                    perfis: [perfisSistema.ALL],
                 }
             ]
         },
@@ -79,6 +82,7 @@ export default function RootLayout({
         icon?: React.ReactNode,
         children?: MenuItem[],
         type?: 'group',
+        perfis?: string[],
     ) => {
         return {
             key,
@@ -86,6 +90,7 @@ export default function RootLayout({
             children,
             label,
             type,
+            perfis,
         } as MenuItem;
     }
 
@@ -104,21 +109,39 @@ export default function RootLayout({
 
     const MontaMenu = () => {
         const items: MenuItem[] = [];
-        const rootMenu: String[] = [];
+        const rootMenu: String[] = [];  
         menus.map((menu) => {
-            const itemsChildren: MenuItem[] = [];
-            if (menu.children) {
-                const menuChildren: MenuItem[] = [];
-                menu.children.map((child) => {
-                    const label = <Link href={child.link}>{child.label}</Link>;
-                    menuChildren.push(getItem(label, child.key, child.icon));
-                });
-                items.push(getItem(menu.label, menu.key, menu.icon, menuChildren));
+            //loop para ver se o perfil do usuario tem permissão para o menu
+            let autorizado: boolean = false;
+            if(auth?.user?.perfisSistemaAtual?.includes('ADM')){
+                autorizado = true;
+            }else if(menu.perfis.includes('QUALQUER_PERFIL')){
+                autorizado = true;
             }else{
-                const label = <Link href={menu.link}>{menu.label}</Link>;
-                items.push(getItem(label, menu.key, menu.icon))
+                auth?.user?.perfisSistemaAtual?.map((perfil: any) => {
+                    menu.perfis.map((menuPerf) => {
+                        if(perfil == menuPerf){
+                            autorizado = true;
+                        }
+                    });                
+                });
             }
-            rootMenu.push(menu.key);
+                        
+            if(autorizado){            
+                const itemsChildren: MenuItem[] = [];
+                if (menu.children) {
+                    const menuChildren: MenuItem[] = [];
+                    menu.children.map((child) => {
+                        const label = <Link href={child.link}>{child.label}</Link>;
+                        menuChildren.push(getItem(label, child.key, child.icon));
+                    });
+                    items.push(getItem(menu.label, menu.key, menu.icon, menuChildren));
+                }else{
+                    const label = <Link href={menu.link}>{menu.label}</Link>;
+                    items.push(getItem(label, menu.key, menu.icon))
+                }
+                rootMenu.push(menu.key);
+            }
         });
         setRootSubmenuKeys(rootMenu);
         setItemsMenu(items);
