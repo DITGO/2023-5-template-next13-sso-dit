@@ -273,7 +273,7 @@ export default function RootLayout({
                                             <Button type="link" onClick={() => setUnidadeClick(item)} style={{ color: '#000000' }} ><StarFilled />{item.nome}</Button>
                                         </List.Item>
                                     )
-                                })}
+                                })} 
                             </List>
                         </Modal>   
                         <Drawer title="Dados do Usuário" placement="right" onClose={actionDrawer} open={openDrawer}>
