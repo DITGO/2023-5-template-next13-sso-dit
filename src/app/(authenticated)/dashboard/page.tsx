@@ -99,7 +99,7 @@ export default function Dashboard() {
       if(!auth?.user?.perfisSistemaAtual?.includes(perfisSistema.ATENDENTE)){
         auth?.logoutSSO();
       }
-    }*/
+    }*/ 
     //No meu caso aqui nao é preciso pois a tela é de acesso perfisSistema.ALL
   }, []);
 
