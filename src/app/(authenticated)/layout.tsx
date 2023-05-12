@@ -301,7 +301,7 @@ export default function RootLayout({
                         </Modal>
                         <Drawer title="Dados do Usuário" placement="right" onClose={actionDrawer} open={openDrawer}>
                             <p style={{ fontSize: 18, fontWeight: 700 }}>{auth.user?.nome}</p>
-                            <p>{auth.user?.corporacaoAtual.nome ? auth.user?.corporacaoAtual.nome : ''} - {auth.user?.funcao}</p>
+                            <p>{auth.user?.corporacaoAtual ? auth.user?.corporacaoAtual.nome : ''} - {auth.user?.funcao}</p>
                             <Divider>Unidades</Divider>
                             <p>Unidade:</p><p>{auth.user?.unidade.nome}</p>
                             <Divider />
