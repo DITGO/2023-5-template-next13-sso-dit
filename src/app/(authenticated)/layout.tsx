@@ -275,7 +275,7 @@ export default function RootLayout({
                                     )
                                 })} 
                             </List>
-                        </Modal>   
+                        </Modal>
                         <Drawer title="Dados do Usuário" placement="right" onClose={actionDrawer} open={openDrawer}>
                             <p style={{ fontSize: 18, fontWeight: 700 }}>{auth.user?.nome}</p>
                             <p>{auth.user?.corporacaoAtual.nome} - {auth.user?.funcao}</p>
