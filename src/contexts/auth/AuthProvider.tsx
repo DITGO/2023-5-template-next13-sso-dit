@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     });
   }
 
-  const setUserSSO = (us: UserType) => {
+  const setUserSSO = (us: UserType | null) => {
     setUser(us);
   }
 
@@ -57,22 +57,14 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       if(user?.token != localStorage.getItem('token_sso')!){
         //validar
         validaToken(localStorage.getItem('token_sso')!);
-      }/*else{
-        setUser(user);
-      }*/
+      }
   } else if (tokenParam) {
     console.log('token');
     //validar
     validaToken(tokenParam);
-  } else /*if(user?.token != null) {
-    console.log('auth');
-    //validar
-    validaToken(user.token);
-  } else*/ {
+  } else {
     window.location.href = `${urlsServices.SSOWS}auth?response_type=token_only&client_id=${sistemaNameSSO}&redirect_uri=${encodeURIComponent(window.location.href.replace('#', '|').split('/?access_token')[0])}`;
   }
-
-  //removeParameterUrl('access_token');
 
   return <AuthContext.Provider value={{ user, validado, setUserSSO, logoutSSO }}>{children}</AuthContext.Provider>
 

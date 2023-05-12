@@ -1,4 +1,7 @@
 "use client";
+import { perfisSistema, sistemaNameSSO } from '@/configs/sistemaConfig';
+import { urlsServices } from '@/configs/urlsConfig';
+import { useAuth } from '@/contexts/auth/AuthProvider';
 import { Card, Col, Row } from 'antd';
 import {
     Chart as ChartJS,
@@ -10,6 +13,7 @@ import {
     Legend,
     ArcElement,
 } from 'chart.js';
+import { useEffect } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 
 /*-------------Grafico em barras--------------*/
@@ -85,6 +89,20 @@ export const dataPie = {
 /*----------------------------------------------------------*/
 
 export default function Dashboard() {  
+
+  const auth = useAuth();
+
+  useEffect(() => {
+    //validar se o usuario tem o perfil
+    //Se houver necessidade de um perfil especifico para a pagina.
+    /*if (!auth?.user?.perfisSistemaAtual?.includes(perfisSistema.ADM)){
+      if(!auth?.user?.perfisSistemaAtual?.includes(perfisSistema.ATENDENTE)){
+        auth?.logoutSSO();
+      }
+    }*/
+    //No meu caso aqui nao é preciso pois a tela é de acesso perfisSistema.ALL
+  }, []);
+
     return (
         <>
             <Row>
