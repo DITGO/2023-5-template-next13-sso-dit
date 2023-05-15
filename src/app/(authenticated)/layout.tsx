@@ -57,8 +57,9 @@ export default function RootLayout({
             icon: <DesktopOutlined />,
             link: '/dashboard',
             perfis: [perfisSistema.ALL],
+            children: [],
         },
-        {
+        /*{
             label: 'Teste',
             key: 'teste',
             icon: <ExperimentOutlined />,
@@ -72,6 +73,14 @@ export default function RootLayout({
                     perfis: [perfisSistema.ALL],
                 }
             ]
+        },*/
+        {
+            label: 'Dashboard2',
+            key: 'dashboard2',
+            icon: <DesktopOutlined />,
+            link: '/dashboard',
+            perfis: [perfisSistema.ALL],
+            children: [],
         },
 
     ];
@@ -80,7 +89,7 @@ export default function RootLayout({
         label: React.ReactNode,
         key?: React.Key | null,
         icon?: React.ReactNode,
-        children?: MenuItem[],
+        children?: MenuItem[] | [],
         type?: 'group',
         perfis?: string[],
     ) => {
@@ -129,9 +138,9 @@ export default function RootLayout({
 
             if(autorizado){            
                 const itemsChildren: MenuItem[] = [];
-                if (menu.children) {
+                if (menu.children.length > 0) {
                     const menuChildren: MenuItem[] = [];
-                    menu.children.map((child) => {
+                    menu.children.map((child: any) => {
                         const label = <Link href={child.link}>{child.label}</Link>;
                         menuChildren.push(getItem(label, child.key, child.icon));
                     });
