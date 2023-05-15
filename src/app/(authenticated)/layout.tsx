@@ -59,11 +59,12 @@ export default function RootLayout({
             perfis: [perfisSistema.ALL],
             children: [],
         },
-        /*{
+        {
             label: 'Teste',
             key: 'teste',
             icon: <ExperimentOutlined />,
             perfis: [perfisSistema.ALL],
+            link: '',
             children: [
                 {
                     label: 'Teste 1',
@@ -73,7 +74,7 @@ export default function RootLayout({
                     perfis: [perfisSistema.ALL],
                 }
             ]
-        },*/
+        },
         {
             label: 'Dashboard2',
             key: 'dashboard2',
