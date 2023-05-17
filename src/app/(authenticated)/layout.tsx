@@ -1,5 +1,5 @@
 "use client";
-import { AuthContext, AuthProvider, useAuth } from '@/contexts/auth/AuthProvider';
+import { AuthProvider, useAuth } from '@/contexts/auth/AuthProvider';
 import '../globals.css'
 import { Inter } from 'next/font/google'
 import ptBR from 'antd/es/locale/pt_BR';
@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Avatar, Breadcrumb, BreadcrumbItemProps, Button, Col, ConfigProvider, Divider, Drawer, Layout, List, Menu, MenuProps, Modal, Popover, Result, Row, Space, Tooltip, theme } from 'antd';
 import { removeParameterUrl } from '@/utils/UtilsSistema';
 import { urlsServices } from '@/configs/urlsConfig';
+import { usePathname } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -38,6 +39,8 @@ export default function RootLayout({
     const [visibleSensive, setVisibleSensive] = useState(false);
     const [openDrawer, setOpenDrawer] = useState(false);
 
+    const path = usePathname();
+
     const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
         const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
         if (rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
@@ -46,7 +49,7 @@ export default function RootLayout({
           setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
         }
     };
-    
+
 
     type MenuItem = Required<MenuProps>['items'][number];
 
@@ -105,8 +108,7 @@ export default function RootLayout({
     }
 
     const atualizaMigalhas = (e: any) => {
-        console.log(e);
-        const path = e.keyPath.reverse();//window.location.pathname.split('/');
+        const path = e.keyPath.reverse();
         let breacrumpP: any = [];
         path.map((item: string) => {
             if(item != ''){
@@ -119,7 +121,7 @@ export default function RootLayout({
 
     const MontaMenu = () => {
         const items: MenuItem[] = [];
-        const rootMenu: String[] = [];  
+        const rootMenu: String[] = [];
         menus.map((menu) => {
             //loop para ver se o perfil do usuario tem permissão para o menu
             let autorizado: boolean = false;
@@ -133,11 +135,11 @@ export default function RootLayout({
                         if(perfil == menuPerf){
                             autorizado = true;
                         }
-                    });                
+                    });
                 });
             }
 
-            if(autorizado){            
+            if(autorizado){
                 const itemsChildren: MenuItem[] = [];
                 if (menu.children.length > 0) {
                     const menuChildren: MenuItem[] = [];
@@ -167,7 +169,7 @@ export default function RootLayout({
                 unidadeN.push({nome: item.unidadeNome, codigo: item.unidadeId});
             }
         });
-        
+
         setUnidades(unidadeN);
 
         if(!localStorage.getItem('localId') && localStorage.getItem('localId') == '' && localStorage.getItem('localId') == undefined){
@@ -177,7 +179,7 @@ export default function RootLayout({
         }else{
             setUnidade({nome: localStorage.getItem('localNome')!, codigo: parseInt(localStorage.getItem('localId')!)});
         }
-        
+
     }
 
     const openModalSelectUnidade = () => {
@@ -201,13 +203,13 @@ export default function RootLayout({
 
     const actionDrawer = () => {
         setOpenDrawer(!openDrawer);
-    } 
+    }
 
     useEffect(() => {
         getUnidades();
         MontaMenu();
         removeParameterUrl('access_token');
-        setMigalhas([{title: 'Dashboard'}]);
+        setMigalhas([{title: path}]);
     }, [auth]);
 
     return (
@@ -246,7 +248,7 @@ export default function RootLayout({
                                     )}*/
                                     items={itemsMenu}
                                     style={{ height: '83.5%' }}
-                                    
+
                                 />
                                 <Footer>
                                     <Row style={{ width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column', marginTop: -15 }}>
@@ -258,11 +260,11 @@ export default function RootLayout({
                                 </Footer>
                             </Sider>
                             <Layout style={{ width: '100%' }}>
-                                <Header style={{ padding: 5, background: colorBgContainer, borderRadius: '0px 0px 10px 10px', marginInline: 5}} >  
+                                <Header style={{ padding: 5, background: colorBgContainer, borderRadius: '0px 0px 10px 10px', marginInline: 5}} >
                                     <Row style={{ width: '100%', display: 'flex', justifyContent: 'left', alignItems: 'center', padding: 5 }}>
-                                        <Col span={6}>                                                                            
+                                        <Col span={6}>
                                             <Row><Title style={{ fontSize: 24, marginTop: -15, fontWeight: 700 }}>{sistemaNameSSO}</Title></Row>
-                                            <Row style={{ fontSize: 14, color: '#00000080', marginTop: -10 }}>{sistemaDescricao}</Row>                                     
+                                            <Row style={{ fontSize: 14, color: '#00000080', marginTop: -10 }}>{sistemaDescricao}</Row>
                                         </Col>
                                         <Col span={10}>
                                             <Row style={{ fontSize: 14, color: '#00000080', paddingLeft: 15 }}>Unidade&nbsp;<Popover title="Clique no nome abaixo para trocar de unidade."><QuestionCircleFilled /></Popover></Row>
@@ -282,22 +284,22 @@ export default function RootLayout({
                                                     ) : (
                                                         <Row><Col style={{ fontSize: 12, color: '#00000080' }}>*********** - ****************</Col><Col style={{ marginTop: -2, paddingLeft: 5 }}><EyeOutlined onClick={() => setVisibleSensive(!visibleSensive)} className='click'/></Col></Row>
                                                     )}
-                                                    
-                                                </Col> 
-                                                <Button shape='circle' icon={<PoweroffOutlined style={{ color: 'red' }} title={'Sair'} />} onClick={auth?.logoutSSO} />                                 
+
+                                                </Col>
+                                                <Button shape='circle' icon={<PoweroffOutlined style={{ color: 'red' }} title={'Sair'} />} onClick={auth?.logoutSSO} />
                                             </Space>
                                         </Col>
-                                    </Row>                        
+                                    </Row>
                                 </Header>
                                 <Content style={{ margin: '5px', backgroundColor: colorBgContainer, overflowY: 'auto', borderRadius: '10px 10px 0px 0px', padding: 10 }}>
-                                    <Breadcrumb style={{ margin: '16px 0' }} items={migalhas!} />                                    
+                                    <Breadcrumb style={{ margin: '16px 0' }} items={migalhas!} />
                                         <AuthProvider>
                                             {children}
-                                        </AuthProvider>                                                                   
+                                        </AuthProvider>
                                 </Content>
                                 <Footer style={{ textAlign: 'center' }}>{sistemaNameSSO} ©2023 Divisão de Inovação e Tecnologia</Footer>
                             </Layout>
-                        </Layout>  
+                        </Layout>
                         <Modal title={'Escolha uma unidade'} open={openModalUnidade} footer width={600} onCancel={onCloseSelectUnidade} >
                             <List>
                                 {unidades.map((item, index) => {
@@ -306,7 +308,7 @@ export default function RootLayout({
                                             <Button type="link" onClick={() => setUnidadeClick(item)} style={{ color: '#000000' }} ><StarFilled />{item.nome}</Button>
                                         </List.Item>
                                     )
-                                })} 
+                                })}
                             </List>
                         </Modal>
                         <Drawer title="Dados do Usuário" placement="right" onClose={actionDrawer} open={openDrawer}>
@@ -329,21 +331,21 @@ export default function RootLayout({
                                     sistema = <p><strong>{perfil.sistema.descricao.toUpperCase()} / {perfil.descricao}</strong></p>
                                 }else{
                                     sistema = <p>{perfil.sistema.descricao.toUpperCase()} / {perfil.descricao}</p>
-                                }                                    
+                                }
                                 return(sistema);
                             })}
-                        </Drawer>                   
+                        </Drawer>
                     </ConfigProvider>
-                ):(                                    
+                ):(
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                         <Result
-                            icon={<LoadingOutlined />}                            
+                            icon={<LoadingOutlined />}
                             title="Validando seus dados!"
                             subTitle="Aguarde, você será redirecionado..."
                             style={{ marginTop: '15%' }}
                             extra={<Button type="link" onClick={() => redirect()}>Clique aqui se não for redirecionado!</Button>}
                         />
-                    </div>                                    
+                    </div>
                 )
             }
         </>
