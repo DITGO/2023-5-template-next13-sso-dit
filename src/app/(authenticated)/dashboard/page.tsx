@@ -1,6 +1,4 @@
-"use client";
-import { perfisSistema, sistemaNameSSO } from '@/configs/sistemaConfig';
-import { urlsServices } from '@/configs/urlsConfig';
+'use client';
 import { useAuth } from '@/contexts/auth/AuthProvider';
 import { Card, Col, Row } from 'antd';
 import {
@@ -65,7 +63,14 @@ export const dataPie = {
   datasets: [
     {
       label: '# of Votes',
-      data: [Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100],
+      data: [
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+      ],
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
@@ -89,7 +94,6 @@ export const dataPie = {
 /*----------------------------------------------------------*/
 
 export default function Dashboard() {
-
   const auth = useAuth();
 
   useEffect(() => {
@@ -99,7 +103,7 @@ export default function Dashboard() {
       if(!auth?.user?.perfisSistemaAtual?.includes(perfisSistema.ATENDENTE)){
         auth?.logoutSSO();
       }
-    }*/ 
+    }*/
     //No meu caso aqui nao é preciso pois a tela é de acesso perfisSistema.ALL
   }, []);
 
@@ -107,7 +111,7 @@ export default function Dashboard() {
     <>
       <Row>
         <Col>
-          <Card style={{ width: 600, }}>
+          <Card style={{ width: 600 }}>
             <Bar options={options} data={dataBars} />
           </Card>
         </Col>
@@ -118,5 +122,5 @@ export default function Dashboard() {
         </Col>
       </Row>
     </>
-  )
+  );
 }

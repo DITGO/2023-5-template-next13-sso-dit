@@ -1,11 +1,11 @@
 import { domainNameProd, domainNameDesv } from './sistemaConfig';
-export let urlsServices = {
-    SIGUWS: 'https://siguws.ssp.go.gov.br/',
-    LEGADOWS: 'https://legadows.ssp.go.gov.br/',
-    SSOWS: 'https://ssows.ssp.go.gov.br/',
-    BACKENDWS: 'URLBACKENDPROD',
+export const urlsServices = {
+  SIGUWS: 'https://siguws.ssp.go.gov.br/',
+  LEGADOWS: 'https://legadows.ssp.go.gov.br/',
+  SSOWS: 'https://ssows.ssp.go.gov.br/',
+  BACKENDWS: 'URLBACKENDPROD',
 };
-export let ambiente: string = '';
+export let ambiente = '';
 
 if (location.hostname.indexOf(domainNameProd) > -1) {
   urlsServices.SIGUWS = 'https://siguws.ssp.go.gov.br/';

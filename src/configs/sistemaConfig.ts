@@ -13,36 +13,35 @@ export const domainNameHomo = 'gmospc-homo.ssp.go.gov.br';
 export const domainNameDesv = 'localhost';
 
 export const perfisSistema = {
-    ADM: 'ADM',
-    ATENDENTE: 'ATENDENTE',
-    SUPORTE: 'SUPORTE',
-    BASICO: 'BASICO',
-    ALL: 'QUALQUER_PERFIL',
+  ADM: 'ADM',
+  ATENDENTE: 'ATENDENTE',
+  SUPORTE: 'SUPORTE',
+  BASICO: 'BASICO',
+  ALL: 'QUALQUER_PERFIL',
 };
 
 export const getConfig = (type: string) => {
+  const configPub = {
+    headers: {
+      'Access-Control-Allow-Origin': `${window.location.origin}`,
+      'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTION',
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+  };
 
-    const configPub = {
-        headers: {
-            "Access-Control-Allow-Origin": `${window.location.origin}`,
-            "Access-Control-Allow-Methods": "POST, GET, PUT, OPTION",
-            "Content-Type": "application/json;charset=UTF-8",
-        }
-    }
+  const configPriv = {
+    headers: {
+      'Access-Control-Allow-Origin': `${window.location.origin}`,
+      'Access-Control-Allow-Headers': 'Authorization',
+      'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTION',
+      'Content-Type': 'application/json;charset=UTF-8',
+      Autorization: `Bearer ${localStorage.getItem('token_sso')}`,
+    },
+  };
 
-    const configPriv = {
-        headers: {
-            "Access-Control-Allow-Origin": `${window.location.origin}`,
-            "Access-Control-Allow-Headers": "Authorization",
-            "Access-Control-Allow-Methods": "POST, GET, PUT, OPTION",
-            "Content-Type": "application/json;charset=UTF-8",
-            "Autorization": `Bearer ${localStorage.getItem('token_sso')}`
-        }
-    }
+  if (type === 'priv') {
+    return configPriv;
+  }
 
-    if(type === "priv"){
-        return configPriv;
-    }
-
-    return configPub;
-}
+  return configPub;
+};
